@@ -8,12 +8,13 @@ gulp.task('add', function(done){
   });
 
   // Run git commit
-gulp.task('commit', function(done){
+  gulp.task('commit', function(){
     return gulp.src('./*')
-      .pipe(git.commit('initial commit'));
-    done();
+      .pipe(git.commit('initial commit', {
+        disableAppendPaths: true
+      }));
   });
-
+   
   //Run git push
   gulp.task('push', function(done){
     git.push('origin', 'master', function (err) {
