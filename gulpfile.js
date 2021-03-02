@@ -23,6 +23,8 @@ gulp.task('add', function(done){
     done();
   });
 
+  gulp.task('gitpush', gulp.series('add', 'commit', 'push'))
+
   gulp.task('helloworld', function(done){
     console.log('HelloWorld');
     done();
