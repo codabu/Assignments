@@ -8,16 +8,18 @@ gulp.task('add', function(done){
   });
 
   // Run git commit
-gulp.task('commit', function(){
+gulp.task('commit', function(done){
     return gulp.src('./*')
       .pipe(git.commit('initial commit'));
+    done();
   });
 
   //Run git push
-  gulp.task('push', function(){
+  gulp.task('push', function(done){
     git.push('origin', 'master', function (err) {
       if (err) throw err;
     });
+    done();
   });
 
   gulp.task('helloworld', function(done){
