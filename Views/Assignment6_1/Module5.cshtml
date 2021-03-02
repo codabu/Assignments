@@ -1,0 +1,59 @@
+﻿@model ViewModel
+@{
+    ViewData["Title"] = "Module 5 Assignment";
+}
+
+@{
+    if (Model.accessLevel >= 8)
+    {
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <td>First Name</td>
+                    <td>Last Name</td>
+                    <td>Grade</td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Student s in @Model.studentList)
+                {
+                    <tr>
+                        <td>@s.FirstName</td>
+                        <td>@s.LastName</td>
+                        <td>@s.Grade</td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    }
+
+    if (Model.accessLevel >= 2 && Model.accessLevel < 8)
+    {
+
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <td>First Name</td>
+                    <td>Last Name</td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Student s in @Model.studentList)
+                {
+                    <tr>
+                        <td>@s.FirstName</td>
+                        <td>@s.LastName</td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    }
+
+    if (Model.accessLevel < 2)
+    {
+
+        <p>You do not have sufficient access to view this data</p>
+    }
+}
