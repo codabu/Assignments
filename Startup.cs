@@ -8,6 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Assignments.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Assignments
 {
@@ -24,6 +26,9 @@ namespace Assignments
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            services.AddDbContext<CountryContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("CountryContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,6 +53,10 @@ namespace Assignments
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(
+                    name: "custom",
+                    pattern: "{controller=Olympics}/{action=Countries}/game/{activeGame}/sport/{activeSport}");
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
