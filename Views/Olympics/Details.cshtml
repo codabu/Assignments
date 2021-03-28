@@ -1,9 +1,9 @@
 ﻿@model CountryViewModel
 @{
-    ViewData["Title"] = "Team Details";
+    ViewData["Title"] = "Country Details";
 }
 
-<h2 class="text-center p-2">Team Details</h2>
+<h2 class="text-center p-2">Country Details</h2>
 
 <div class="row">
     <div class="col-6 offset-3">
@@ -19,8 +19,14 @@
                 <h4>Sport / Type: @Model.Country.Sport.Name</h4>
             </li>
             <li class="list-group-item">
-                <a asp-action="Countries" asp-route-activeGame="@Model.ActiveGame"
-                   asp-route-activeSport="@Model.ActiveSport">Return to Home Page</a>
+                <form asp-action="Add" method="post">
+                    <a asp-action="Countries" asp-route-activeGame="@Model.ActiveGame"
+                       asp-route-activeSport="@Model.ActiveSport">Return to Home Page</a>
+                    <button type="submit" class="btn btn-primary">
+                        Add to Favorites
+                    </button>
+                    <input type="hidden" asp-for="Country.CountryID" />
+                </form>
             </li>
         </ul>
     </div>

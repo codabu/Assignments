@@ -7,6 +7,7 @@ namespace Assignments.Models
 {
     public class CountryListViewModel : CountryViewModel
     {
+        public String UserName { get; set; }
         public List<Country> Countries { get; set; }
 
         // use full properties for Games and Sports
@@ -17,9 +18,13 @@ namespace Assignments.Models
             get => games;
             set
             {
-                games = value;
-                games.Insert(0,
-                    new Game { GameID = "all", Name = "All" });
+                //games = value;
+                //games.Insert(0,
+                //    new Game { GameID = "all", Name = "All" });
+                games = new List<Game> {
+                    new Game { GameID = "all", Name = "All" }
+                };
+                games.AddRange(value);
             }
         }
 
@@ -29,9 +34,13 @@ namespace Assignments.Models
             get => sports;
             set
             {
-                sports = value;
-                sports.Insert(0,
-                    new Sport { SportID = "all", Name = "All" });
+                //sports = value;
+                //sports.Insert(0,
+                //    new Sport { SportID = "all", Name = "All" });
+                sports = new List<Sport> {
+                    new Sport { SportID = "all", Name = "All" }
+                };
+                sports.AddRange(value);
             }
         }
 

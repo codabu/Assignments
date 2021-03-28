@@ -49,6 +49,34 @@
         </nav>
     </header>
     <div class="container">
+
+        @if (ViewContext.View.Path.Contains("Countries") || ViewContext.View.Path.Contains("Details"))
+        {
+            <header class="text-center text-white">
+                <h1 class="bg-primary mt-3 p-3">Olympic Teams</h1>
+
+                @* show any message in TempData *@
+                @if (TempData["message"] != null)
+                {
+                    <h4 class="bg-success p-2">@TempData["message"]</h4>
+                }
+
+            @* show link to Favorites page unless on Favorites page *@
+                @if (!ViewContext.View.Path.Contains("Favorites"))
+                {
+                    var session = new OSession(Context.Session);
+                    <h5 class="bg-info p-2">
+                        <a asp-controller="Favorites" asp-action="Countries" class="text-white">
+                            @(session.GetName() == null ? "My" : session.GetName() + "'s")
+                            Favorite Countries
+                        </a>
+
+                        @* get number of Favorite teams from session and display in badge *@
+                        <span class="badge badge-light">@(session.GetMyCountryCount())</span>
+                    </h5>
+                }
+            </header>
+        }
         <main role="main" class="pb-3">
             @RenderBody()
         </main>

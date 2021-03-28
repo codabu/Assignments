@@ -81,3 +81,5 @@ C:\Users\Corry\Desktop\Spring 2021 Classes\Advanced C#\Assignments\bin\Debug\net
 C:\Users\Corry\Desktop\Spring 2021 Classes\Advanced C#\Assignments\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\Corry\Desktop\Spring 2021 Classes\Advanced C#\Assignments\obj\Debug\netcoreapp3.1\Razor\Views\Olympics\Countries.cshtml.g.cs
 C:\Users\Corry\Desktop\Spring 2021 Classes\Advanced C#\Assignments\obj\Debug\netcoreapp3.1\Razor\Views\Olympics\Details.cshtml.g.cs
+C:\Users\Corry\Desktop\Spring 2021 Classes\Advanced C#\Assignments\obj\Debug\netcoreapp3.1\Razor\Views\Favorites\Countries.cshtml.g.cs
+C:\Users\Corry\Desktop\Spring 2021 Classes\Advanced C#\Assignments\obj\Debug\netcoreapp3.1\Razor\Views\Name\Countries.cshtml.g.cs

@@ -20,6 +20,25 @@ namespace Assignments.Controllers
         public IActionResult Countries(string activeGame = "all",
                                    string activeSport = "all")
         {
+            var session = new OSession(HttpContext.Session);
+            session.SetActiveGame(activeGame);
+            session.SetActiveSport(activeSport);
+
+            // if no count value in session, use data in cookie to restore fave teams in session 
+            int? count = session.GetMyCountryCount();
+            if (count == null)
+            {
+                var cookies = new OCookies(HttpContext.Request.Cookies);
+                string[] ids = cookies.GetMyCountryIds();
+
+                List<Country> mycountries = new List<Country>();
+                if (ids.Length > 0)
+                    mycountries = context.Countries.Include(t => t.Game)
+                        .Include(t => t.Sport)
+                        .Where(t => ids.Contains(t.CountryID)).ToList();
+                session.SetMyCountries(mycountries);
+            }
+
             var data = new CountryListViewModel
             {
                 ActiveGame= activeGame,
@@ -40,19 +59,11 @@ namespace Assignments.Controllers
             return View(data);
         }
 
-        [HttpPost]
-        public IActionResult Details(CountryViewModel model)
-        {
-            //Utility.LogCountryClick(model.Country.CountryID);
+        
 
-            TempData["ActiveGame"] = model.ActiveGame;
-            TempData["ActiveSport"] = model.ActiveSport;
-            return RedirectToAction("Details", new { ID = model.Country.CountryID });
-        }
-
-        [HttpGet]
         public IActionResult Details(string id)
         {
+            var session = new OSession(HttpContext.Session);
             var model = new CountryViewModel
             {
                 Country = context.Countries
@@ -63,6 +74,33 @@ namespace Assignments.Controllers
                 ActiveSport = TempData?["ActiveSport"]?.ToString() ?? "all"
             };
             return View(model);
+        }
+
+        [HttpPost]
+        public RedirectToActionResult Add(CountryViewModel model)
+        {
+            model.Country = context.Countries
+                .Include(t => t.Game)
+                .Include(t => t.Sport)
+                .Where(t => t.CountryID == model.Country.CountryID)
+                .FirstOrDefault();
+
+            var session = new OSession(HttpContext.Session);
+            var teams = session.GetMyCountries();
+            teams.Add(model.Country);
+            session.SetMyCountries(teams);
+
+            var cookies = new OCookies(HttpContext.Response.Cookies);
+            cookies.SetMyCountryIds(teams);
+
+            TempData["message"] = $"{model.Country.Name} added to your favorites";
+
+            return RedirectToAction("Countries",
+                new
+                {
+                    ActiveGame= session.GetActiveGame(),
+                    ActiveSport = session.GetActiveSport()
+                });
         }
     }
 }
