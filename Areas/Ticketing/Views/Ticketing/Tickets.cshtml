@@ -1,0 +1,71 @@
+﻿@using Assignments.Areas.Ticketing.Models;
+
+@model TicketViewModel
+
+@{
+    ViewData["Title"] = "Ticketing System";
+}
+
+<div class="row">
+    <div class="col-sm-2">
+        <form asp-action="Filter" method="post">
+            <div class="form-group">
+                <label>Status:</label>
+                <select name="filter" class="form-control"
+                        asp-items="@(new SelectList(Model.Statuses,
+                    "StatusId", "Name", Model.Filters.StatusId))">
+                    <option value="all">All</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Filter</button>
+            <a asp-action="Tickets" asp-route-id="" class="btn btn-primary">Clear</a>
+        </form>
+    </div>
+    <div class="col-sm-10">
+
+        <a asp-action="Add"><b>Add new ticket</b></a>
+
+        <table class="table table-bordered table-striped mt-2">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Point Value</th>
+                    <th>Sprint Number</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Ticket ticket in Model.Tickets)
+                {
+                    <tr>
+                        <td>@ticket.Name</td>
+                        <td>@ticket.Description</td>
+                        <td>@ticket.PointValue</td>
+                        <td>@ticket.SprintNumber</td>
+                        <td>@ticket.Status.Name</td>
+                        <td class"w-50">
+                            <form asp-action="Edit" method="post"
+                                  asp-route-id="@Model.Filters.FilterString"
+                                  class="mr-2">
+
+                                <input type="hidden"
+                                       name="@nameof(ticket.Id)" value="@ticket.Id" />
+
+                                <select class="form-control" name="@nameof(ticket.StatusId)" id="dropDown"
+                                        onchange="submit()"
+                                        asp-items="@(new SelectList(Model.Statuses, "StatusId", "Name"))">
+                                        <option value=""></option>
+                                </select>
+                                <br />
+                                <button type="submit" value= "" class="btn btn-primary btn-sm">Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
