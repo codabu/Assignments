@@ -17,12 +17,11 @@ namespace Assignments.Controllers
             context = ctx;
         }
 
-        public IActionResult Countries(string activeGame = "all",
-                                   string activeSport = "all")
+        public IActionResult Countries(CountryListViewModel model)
         {
             var session = new OSession(HttpContext.Session);
-            session.SetActiveGame(activeGame);
-            session.SetActiveSport(activeSport);
+            session.SetActiveGame(model.ActiveGame);
+            session.SetActiveSport(model.ActiveSport);
 
             // if no count value in session, use data in cookie to restore fave teams in session 
             int? count = session.GetMyCountryCount();
@@ -39,24 +38,29 @@ namespace Assignments.Controllers
                 session.SetMyCountries(mycountries);
             }
 
-            var data = new CountryListViewModel
+
+            //Updated to complex model binding
+            /*var data = new CountryListViewModel
             {
-                ActiveGame= activeGame,
-                ActiveSport = activeSport,
+                ActiveGame= model.ActiveGame,
+                ActiveSport = model.ActiveSport,
                 Games = context.Games.ToList(),
                 Sports = context.Sports.ToList()
-            };
+            };*/
+
+            model.Games = context.Games.ToList();
+            model.Sports = context.Sports.ToList();
 
             IQueryable<Country> query = context.Countries;
-            if (activeGame != "all")
+            if (model.ActiveGame != "all")
                 query = query.Where(
-                    t => t.Game.GameID.ToLower() == activeGame.ToLower());
-            if (activeSport != "all")
+                    t => t.Game.GameID.ToLower() == model.ActiveGame.ToLower());
+            if (model.ActiveSport != "all")
                 query = query.Where(
-                    t => t.Sport.SportID.ToLower() == activeSport.ToLower());
-            data.Countries = query.ToList();
+                    t => t.Sport.SportID.ToLower() == model.ActiveSport.ToLower());
+            model.Countries = query.ToList();
 
-            return View(data);
+            return View(model);
         }
 
         

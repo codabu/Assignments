@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Assignments.Models;
 using Microsoft.EntityFrameworkCore;
+using Assignments.Areas.Ticketing.Models;
 
 namespace Assignments
 {
@@ -35,6 +36,9 @@ namespace Assignments
 
             services.AddDbContext<CountryContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("CountryContext")));
+
+            services.AddDbContext<TicketContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("TicketContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,9 +68,14 @@ namespace Assignments
                     pattern: "{controller=Olympics}/{action=Countries}/game/{activeGame}/sport/{activeSport}");
 
                 endpoints.MapControllerRoute(
+                  name: "areas",
+                  pattern: "{area}/{controller=Ticketing}/{action=Tickets}/{id?}");
+
+                endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
         }
     }
 }
